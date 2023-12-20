@@ -1,0 +1,8 @@
+input.delete-input {
+    font-family:Verdana, sans-serif;
+    font-size:15px;
+    border: none;
+    color: red;
+    background-color: white;
+    cursor: pointer;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Article Information</title>
+    <link href="/css/main-style.css" type="text/css" rel="stylesheet" />
+    <link href="/css/registration.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<ul class="nav-ul">
+  <li class="nav-li"><a class="nav-a" th:href="@{/main}"> Main page</a> </li>
+  <li class="nav-li" style="float: right" th:if="${#authorization.expression('!isAuthenticated()')}"><a class="nav-a" th:href="@{/login}">Login</a></li>
+  <li class="nav-li" style="float: right" th:if="${#authorization.expression('!isAuthenticated()')}"><a class="nav-a" th:href="@{/register}">Registration</a></li>
+  <li class="nav-li" th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-a" th:href="@{/user/{username}(username=${#authentication.getName()})}">User page</a></li>
+  <li class="nav-li" th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-a" th:href="@{/addfile}">Add new article</a></li>
+  <li class="nav-li" style="float: right" th:if="${#authorization.expression('isAuthenticated()')}">
+    <form th:action="@{/logout}" method="post">
+      <input class="logout-input" type="submit" value="Logout"/>
+    </form>
+  </li>
+  <li class="nav-li" style="float: right"><a class="nav-a" th:href="@{/search}">Search</a></li>
+</ul>
+
+  <div style="padding:20px;margin-top:30px;height:1000px;">
+    <h1>Update information about article</h1>
+    <form method="post" th:action="@{/update}">
+      <div class="main">
+
+        <div class="field">
+          <label for="articleNameInput">Article name:</label>
+          <input id="articleNameInput" type="text" th:value="${file.articleName}" name="newArticleName"/>
+        </div>
+
+        <div class="field">
+          <label for="authorInput">Author:</label>
+          <input id="authorInput" type="text" th:value="${file.author}" name="newAuthor"/>
+        </div>
+
+        <div class="field">
+          <label for="yearInput">Year:</label>
+          <input id="yearInput" type="number" th:value="${file.year}" name="newYear"/>
+        </div>
+
+        <div class="field">
+          <label for="keywordsInput">Key words:</label>
+          <input id="keywordsInput" type="text" th:value="${file.keyWords}" name="newKeyWords"/>
+        </div>
+
+        <input type="hidden" name="id" th:value="${file.id}">
+        <input type="submit" value="Update" />
+      </div>
+
+    </form>
+  </div>
+
+</body>
+</html>

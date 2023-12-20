@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Catalog</title>
+    <link href="/css/main-style.css" type="text/css" rel="stylesheet" />
+    <link href="/css/attribute-style.css" type="text/css" rel="stylesheet" />
+    <link href="/css/delete-button.css" type="text/css" rel="stylesheet" />
+
+    <style>
+        .context-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
+        .context-menu li {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+
+<ul class="nav-ul">
+    <li class="nav-li"><a class="nav-a" th:href="@{/main}"> Main page</a> </li>
+    <li class="nav-li" style="float: right" th:if="${#authorization.expression('!isAuthenticated()')}"><a class="nav-a" th:href="@{/login}">Login</a></li>
+    <li class="nav-li" style="float: right" th:if="${#authorization.expression('!isAuthenticated()')}"><a class="nav-a" th:href="@{/register}">Registration</a></li>
+    <li class="nav-li" th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-a" th:href="@{/user/{username}(username=${#authentication.getName()})}">User page</a></li>
+    <li class="nav-li" th:if="${#authorization.expression('isAuthenticated()')}"><a class="nav-a" th:href="@{/addfile}">Add new article</a></li>
+    <li class="nav-li" style="float: right" th:if="${#authorization.expression('isAuthenticated()')}">
+        <form th:action="@{/logout}" method="post">
+            <input class="logout-input" type="submit" value="Logout"/>
+        </form>
+    </li>
+    <li class="nav-li" style="float: right"><a class="nav-a" th:href="@{/search}">Search</a></li>
+</ul>
+
+<div style="padding:20px;margin-top:30px;height:1000px;">
+    <h1> All articles </h1>
+    <div class="container">
+        <div class="square" th:each="fileAttribute : ${filesAttributes}">
+
+            <p th:text="${fileAttribute.getArticleName()}"></p>
+            <p th:text="${fileAttribute.getAuthor()}"></p>
+            <p th:text="${fileAttribute.getYear()}"></p>
+            <p th:text="${fileAttribute.getKeyWords()}"></p>
+            <a style="text-decoration: none;" th:href="${fileAttribute.getURI()}">Download</a>
+            <th:block th:if="${#authentication.getName().equals(fileAttribute.getCreatorUsername()) or
+            #authentication.getAuthorities().equals(adminRole)}">
+                <a style="text-decoration: none;" th:href="@{/update/{id}(id=${fileAttribute.id})}">Update</a>
+                <form th:action="@{/addfile/delete}" th:method="delete">
+                    <input type="hidden" th:value="${fileAttribute.getId()}" name="idToDelete">
+                    <input type="hidden" th:value="${fileAttribute.getPathToFile()}" name="pathToDelete">
+                    <input class="delete-input" type="submit" value="Delete"/>
+                </form>
+            </th:block>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!--th:if="${#authorization.expression('isAuthenticated()')}"-->

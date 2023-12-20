@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.square {
+    width: 200px; /* задайте желаемую ширину квадрата */
+    height: auto; /* установите высоту на автоматический режим */
+    background-color: #ebebeb; /* измените цвет фона на нужный */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px; /* добавьте отступ между квадратами */
+    flex-direction: column; /* добавьте свойство flex-direction для размещения параграфов вертикально */
+    word-wrap: break-word; /* добавьте свойство word-wrap или overflow-wrap для переноса текста */
+    border: solid #38444d;
+}
+/*
+.square p {
+    text-align: center;
+}
